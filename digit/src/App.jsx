@@ -6,7 +6,7 @@ export default function App() {
   const [prediction, setPrediction] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const API_URL = import.meta.env.API_URL || "http://localhost:5000";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -97,13 +97,20 @@ export default function App() {
       if (!canvas) return;
 
       const dataURL = canvas.toDataURL("image/png");
+      console.log("Making request to:", API_URL);
+
       const response = await fetch(`${API_URL}/predict`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        mode: "cors",
         body: JSON.stringify({ image: dataURL }),
       });
 
       if (!response.ok) {
+        console.error("Server responded with error:", response.status);
         throw new Error(`HTTP error ${response.status}`);
       }
 
@@ -111,6 +118,7 @@ export default function App() {
       setPrediction(result.prediction);
     } catch (error) {
       console.error("Prediction failed:", error);
+      alert("Failed to get prediction. See console for details.");
     } finally {
       setIsLoading(false);
     }
