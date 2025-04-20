@@ -6,6 +6,11 @@ export default function App() {
   const [prediction, setPrediction] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const API_URL =
+    process.env.NODE_ENV === "production"
+      ? "https://your-backend-url.com"
+      : "http://localhost:5000";
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -95,7 +100,7 @@ export default function App() {
       if (!canvas) return;
 
       const dataURL = canvas.toDataURL("image/png");
-      const response = await fetch("http://localhost:5000/predict", {
+      const response = await fetch(`${API_URL}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: dataURL }),
