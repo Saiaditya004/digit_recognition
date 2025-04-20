@@ -6,10 +6,7 @@ export default function App() {
   const [prediction, setPrediction] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const API_URL =
-    process.env.NODE_ENV === "production"
-      ? "https://your-backend-url.com"
-      : "http://localhost:5000";
+  const API_URL = import.meta.env.API_URL || "http://localhost:5000";
 
   useEffect(() => {
     const canvas = canvasRef.current;
