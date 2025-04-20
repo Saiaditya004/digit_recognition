@@ -6,7 +6,7 @@ export default function App() {
   const [prediction, setPrediction] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const API_URL = import.meta.env.API_URL || "http://localhost:5000";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     const canvas = canvasRef.current;
